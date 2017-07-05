@@ -1,5 +1,6 @@
 package com.example.masatsuna.shakeandvibration;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -7,6 +8,7 @@ import android.hardware.SensorManager;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
             return;
         }
+        /*
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float y = event.values[1];
             if(before_y > 0 && (before_y - y) > 3){
@@ -41,11 +44,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
             before_y = y;
         }
+        */
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    public void onClick(View view) {
+        Intent intent = new Intent(this, RecieveActivity.class);
+        startActivity(intent);
     }
 
     @Override
