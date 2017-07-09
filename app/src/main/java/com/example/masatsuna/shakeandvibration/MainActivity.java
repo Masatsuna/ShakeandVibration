@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void onClick(View view) {
-        Intent intent = new Intent(this, RecieveActivity.class);
+        Intent intent = new Intent(this, ReceiveActivity.class);
         startActivity(intent);
     }
 
