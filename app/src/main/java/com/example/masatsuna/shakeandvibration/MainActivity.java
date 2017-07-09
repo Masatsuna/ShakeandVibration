@@ -36,15 +36,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
             return;
         }
-        /*
+
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float y = event.values[1];
             if(before_y > 0 && (before_y - y) > 3){
-                vibrator.vibrate(500);
+                Intent intent = new Intent("shake");
+                sendBroadcast(intent);
             }
             before_y = y;
         }
-        */
+
     }
 
     @Override

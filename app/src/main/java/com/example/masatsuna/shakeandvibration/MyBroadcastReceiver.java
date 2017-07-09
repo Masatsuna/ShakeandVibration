@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 
+import static android.R.id.message;
 import static android.content.Context.VIBRATOR_SERVICE;
 
 /**
@@ -16,10 +17,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver  {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Bundle bundle = intent.getExtras();
-        String message = bundle.getString("message");
-
-        if(message.equals("vibration")) {
+        if(intent.getAction().equals("shake")) {
             Vibrator  vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
             vibrator.vibrate(500);
         }
