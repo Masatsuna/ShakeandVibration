@@ -9,6 +9,8 @@ import java.net.DatagramSocket;
 
 public class ReceiveActivity extends AppCompatActivity {
 
+    boolean flag = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +22,7 @@ public class ReceiveActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                while (true) {
+                while (flag) {
                     try {
                         int port = 50001;
                         DatagramSocket sock = new DatagramSocket(port);
@@ -37,6 +39,7 @@ public class ReceiveActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
+        flag = false;
         finish();
     }
 }

@@ -48,27 +48,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                     if (before_y > 0 && (before_y - y) > 3) {
                         try {
-                            // IPアドレスを取得（InetAddress型）
                             InetAddress ia = InetAddress.getByName("172.17.252.176");
-
-                            // 送信ポート
                             int port = 50001;
-
-                            // 送信データ （第３引数より）
                             String data = "shake";
-
-                            // データグラムソケットを構築し、ローカルホストマシン上の使用可能なポートにバインド
                             DatagramSocket sock = new DatagramSocket();
-
-                            // 送信パケット生成
-                            // DatagramPacket(byte[] buf, int length, InetAddress address, int port) コンストラクタ
                             DatagramPacket packet = new DatagramPacket(
-                                    data.getBytes(),                // String クラス getBytesメソッド利用
-                                    data.getBytes().length,            // 配列の特徴 length利用
+                                    data.getBytes(),
+                                    data.getBytes().length,
                                     ia,
                                     port);
-
-                            // パケット送信
                             sock.send(packet);
                         } catch (Exception e) {
                             System.out.println(e);
@@ -86,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void onClick(View view) {
+
         Intent intent = new Intent(this, ReceiveActivity.class);
         startActivity(intent);
     }
