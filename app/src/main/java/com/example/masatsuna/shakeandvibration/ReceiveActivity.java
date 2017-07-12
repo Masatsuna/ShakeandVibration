@@ -3,6 +3,7 @@ package com.example.masatsuna.shakeandvibration;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -29,7 +30,11 @@ public class ReceiveActivity extends AppCompatActivity {
                         byte buf[] = new byte[512];
                         DatagramPacket packet = new DatagramPacket(buf, buf.length);
                         sock.receive(packet);
-                        vibrator.vibrate(500);
+                        String data = new String(packet.getData()).trim();
+                        Log.d("tag", data);
+                        if(data.equals("shake")) {
+                            vibrator.vibrate(500);
+                        }
                     } catch (Exception e) {
                         System.out.println(e);
                     }

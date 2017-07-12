@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 @Override
                 public void run() {
 
-                    if (before_y > 0 && (before_y - y) > 3) {
+                    if (before_y > 3 && (before_y - y) > 5) {
                         try {
                             InetAddress ia = InetAddress.getByName("172.17.252.176");
                             int port = 50001;
