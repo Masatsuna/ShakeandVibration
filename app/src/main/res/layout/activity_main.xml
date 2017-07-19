@@ -12,18 +12,18 @@
         android:id="@+id/textview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center"
         android:text="振って相手のスマホをバイブ"
         android:textColor="@android:color/background_dark"
-        android:textSize="40sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/imageview" />
 
     <ImageView
         android:id="@+id/imageview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         app:srcCompat="@drawable/shake"
         android:gravity="center"/>
 
@@ -32,11 +32,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="?attr/actionModeSplitBackground"
         android:clickable="true"
         android:gravity="center"
         android:onClick="onClick"
         android:text="バイブ待機モードへ"
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="40sp" />
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
 
 </LinearLayout>
