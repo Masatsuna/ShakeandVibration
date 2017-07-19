@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.SocketException;
 
 import static java.lang.Thread.sleep;
 
@@ -16,6 +17,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
     boolean flag = true;
     Thread thread;
+    DatagramSocket sock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,12 @@ public class ReceiveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_receive);
 
         final Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        int port = 50001;
+        try {
+            sock = new DatagramSocket(port);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
 
         thread = new Thread(new Runnable() {
             @Override
@@ -30,8 +38,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
                 while (flag) {
                     try {
-                        int port = 50001;
-                        DatagramSocket sock = new DatagramSocket(port);
+
                         byte buf[] = new byte[512];
                         DatagramPacket packet = new DatagramPacket(buf, buf.length);
                         sock.receive(packet);
@@ -68,8 +75,10 @@ public class ReceiveActivity extends AppCompatActivity {
 
     public void onClick(View view) throws InterruptedException {
         flag = false;
-        sleep(3000);
-        //thread.join();
+        thread.interrupt();
+        sock.close();
+//        thread.join();
+//        sleep(3000);
         finish();
     }
 }
