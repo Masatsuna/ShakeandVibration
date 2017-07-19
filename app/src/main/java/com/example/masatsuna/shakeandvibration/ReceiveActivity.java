@@ -1,5 +1,7 @@
 package com.example.masatsuna.shakeandvibration;
 
+import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,9 +10,12 @@ import android.view.View;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+import static java.lang.Thread.sleep;
+
 public class ReceiveActivity extends AppCompatActivity {
 
     boolean flag = true;
+    Thread thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +24,7 @@ public class ReceiveActivity extends AppCompatActivity {
 
         final Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
-        new Thread(new Runnable() {
+        thread = new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -39,12 +44,32 @@ public class ReceiveActivity extends AppCompatActivity {
                         System.out.println(e);
                     }
                 }
+
+                //handler.sendEmptyMessage(0);
             }
-        }).start();
+
+        });
+
+        thread.start();
     }
 
-    public void onClick(View view) {
+//    Handler handler = new Handler(){
+//        public void handleMessage(Message msg) {
+//            finish();
+//        }
+//    };
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        //while (thread.isAlive());
+
+    }
+
+    public void onClick(View view) throws InterruptedException {
         flag = false;
+        sleep(3000);
+        //thread.join();
         finish();
     }
 }

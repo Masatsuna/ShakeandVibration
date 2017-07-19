@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                     if (before_y > 3 && (before_y - y) > 5) {
                         try {
-                            InetAddress ia = InetAddress.getByName("172.17.252.176");
+                            InetAddress ia = InetAddress.getByName("172.17.255.255");
                             int port = 50001;
                             String data = "shake";
                             DatagramSocket sock = new DatagramSocket();
