@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Sensor sensor;
     SensorManager sensorManager;
     float before_y = 0;
+    float before_z = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +43,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             final float y = event.values[1];
+            final float z = event.values[2];
             new Thread(new Runnable() {
                 @Override
                 public void run() {
 
-                    if (before_y > 3 && (before_y - y) > 5) {
+                    if ((before_y - y) > 3 && (before_z - z) < 1) {
                         try {
                             InetAddress ia = InetAddress.getByName("172.17.255.255");
                             int port = 50001;
