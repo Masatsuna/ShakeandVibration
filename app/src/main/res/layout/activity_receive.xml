@@ -30,18 +30,17 @@
         android:layout_weight="3"
         app:srcCompat="@drawable/recieve" />
 
-        <Button
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="?attr/actionModeSplitBackground"
-            android:clickable="true"
-            android:gravity="center"
-            android:onClick="onClick"
-            android:text="シェイクモードへ"
-            android:textColor="@android:color/background_light"
-            android:textSize="30sp" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="?attr/actionModeSplitBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="onClick"
+        android:text="シェイクモードへ"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp" />
 
 
 </LinearLayout>
