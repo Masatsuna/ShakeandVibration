@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Shake and Vibration</string>
+    <string name="shake_Moke">シェイクモードへ</string>
+    <string name="vibration_Mode">バイブ待機モードへ</string>
+    <string name="vibration_wait">バイブ待機</string>
+    <string name="shake">振って相手のスマホをバイブ</string>
+
 </resources>

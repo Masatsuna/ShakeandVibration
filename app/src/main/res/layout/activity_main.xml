@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:gravity="center"
-        android:text="振って相手のスマホをバイブ"
+        android:text="@string/shake"
         android:textColor="@android:color/background_dark"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/imageview" />
@@ -35,7 +35,7 @@
         android:clickable="true"
         android:gravity="center"
         android:onClick="onClick"
-        android:text="バイブ待機モードへ"
+        android:text="@string/vibration_Mode"
         android:textColor="@android:color/white"
         android:textSize="30sp" />
 
