@@ -21,6 +21,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import static java.lang.Thread.sleep;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     Sensor sensor;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     String mode = "vibe";
     float before_y = 0;
     float before_z = 0;
+    boolean flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
+        if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER || !flag) {
             return;
         }
 
@@ -84,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                                     ia,
                                     port);
                             sock.send(packet);
+                            flag = false;
+                            sleep(1000);
+                            flag = true;
                         } catch (Exception e) {
                             System.out.println(e);
                         }
@@ -92,7 +98,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
             }).start();
         }
+
+
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

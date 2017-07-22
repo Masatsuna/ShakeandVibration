@@ -1,11 +1,17 @@
 package com.example.masatsuna.shakeandvibration;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -17,6 +23,7 @@ public class ReceiveActivity extends AppCompatActivity {
     DatagramSocket sock;
     SoundPool soundPool;
     int soundId;
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,26 @@ public class ReceiveActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        final Handler handler = new Handler() {
+            public void handleMessage(Message message) {
+                imageView = (ImageView) findViewById(R.id.imageView);
+                switch (message.obj.toString()) {
+                    case "vibe":
+                        imageView.setImageResource(R.drawable.vibe);
+                        break;
+                    case "bell":
+                        imageView.setImageResource(R.drawable.bell);
+                        break;
+
+                }
+
+
+
+            }
+        };
+
+
+
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -42,7 +69,9 @@ public class ReceiveActivity extends AppCompatActivity {
                         DatagramPacket packet = new DatagramPacket(buf, buf.length);
                         sock.receive(packet);
                         String data = new String(packet.getData()).trim();
-
+                        Message message = Message.obtain();
+                        message.obj = new String(data);
+                        handler.sendMessage(message);
                         switch (data) {
                             case "vibe":
                                 vibrator.vibrate(500);
@@ -51,6 +80,15 @@ public class ReceiveActivity extends AppCompatActivity {
                                 soundPool.play(soundId, 1, 1, 0, 0, 1);
                                 break;
                         }
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                imageView.setImageResource(R.drawable.recieve);
+                            }
+                        }, 400);
+
+
+
                     } catch (Exception e) {
                         System.out.println(e);
                     }
