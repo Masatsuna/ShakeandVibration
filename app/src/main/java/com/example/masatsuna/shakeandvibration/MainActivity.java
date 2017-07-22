@@ -28,9 +28,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Sensor sensor;
     SensorManager sensorManager;
     String mode = "vibe";
-    float before_y = 0;
-    float before_z = 0;
     boolean flag = true;
+    float y, z, before_y = 0, before_z = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +66,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             return;
         }
 
+        y = event.values[1];
+        z = event.values[2];
+
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            final float y = event.values[1];
-            final float z = event.values[2];
             new Thread(new Runnable() {
                 @Override
                 public void run() {
 
-                    if ((before_y - y) > 3 && (before_z - z) < 1) {
+                    if ((before_y - y) > 10 && (before_z - z) < 15 ) {
                         try {
 //                            InetAddress ia = InetAddress.getByName("172.17.255.255");
                             InetAddress ia = InetAddress.getByName("192.168.0.29");
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                         }
                     }
                     before_y = y;
+                    before_z = z;
                 }
             }).start();
         }
