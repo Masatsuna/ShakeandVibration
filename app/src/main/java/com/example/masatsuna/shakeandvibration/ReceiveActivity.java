@@ -1,5 +1,7 @@
 package com.example.masatsuna.shakeandvibration;
 
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ public class ReceiveActivity extends AppCompatActivity {
     boolean flag = true;
     Thread thread;
     DatagramSocket sock;
+    SoundPool soundPool;
+    int soundId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,14 @@ public class ReceiveActivity extends AppCompatActivity {
                         DatagramPacket packet = new DatagramPacket(buf, buf.length);
                         sock.receive(packet);
                         String data = new String(packet.getData()).trim();
-                        if(data.equals("shake")) {
-                            vibrator.vibrate(500);
+
+                        switch (data) {
+                            case "vibe":
+                                vibrator.vibrate(500);
+                                break;
+                            case "bell":
+                                soundPool.play(soundId, 1, 1, 0, 0, 1);
+                                break;
                         }
                     } catch (Exception e) {
                         System.out.println(e);
@@ -53,10 +63,23 @@ public class ReceiveActivity extends AppCompatActivity {
         thread.start();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        soundId = soundPool.load(getApplicationContext(), R.raw.bell, 0);
+    }
+
     public void onClick(View view) throws InterruptedException {
         flag = false;
         thread.interrupt();
         sock.close();
         finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        soundPool.release();
     }
 }

@@ -12,7 +12,7 @@
         android:id="@+id/textview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="4"
         android:gravity="center"
         android:text="@string/shake"
         android:textColor="@android:color/background_dark"
@@ -23,14 +23,44 @@
         android:id="@+id/imageview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="6"
         app:srcCompat="@drawable/shake"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:contentDescription="" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:background="@android:color/holo_blue_light"
+        android:checkedButton="@+id/radioButton"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="バイブ" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="鈴" />
+
+    </RadioGroup>
 
     <Button
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_margin="10dp"
+        android:layout_weight="2"
         android:background="?attr/actionModeSplitBackground"
         android:clickable="true"
         android:gravity="center"
