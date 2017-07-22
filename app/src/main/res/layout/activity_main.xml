@@ -16,7 +16,7 @@
         android:gravity="center"
         android:text="@string/shake"
         android:textColor="@android:color/background_dark"
-        android:textSize="30sp"
+        android:textSize="36sp"
         app:layout_constraintBottom_toTopOf="@+id/imageview" />
 
     <ImageView
@@ -44,18 +44,36 @@
             android:id="@+id/radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_weight="1"
+            android:allowUndo="false"
+            android:autoText="false"
+            android:checked="false"
+            android:contextClickable="false"
+            android:cursorVisible="false"
+            android:duplicateParentState="false"
+            android:editable="false"
+            android:elegantTextHeight="false"
             android:elevation="0dp"
-            android:gravity="center"
-            android:text="バイブ" />
+            android:enabled="true"
+            android:foregroundGravity="right"
+            android:gravity="center_horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:text="バイブ"
+            android:textIsSelectable="false"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="鈴" />
+            android:gravity="center_horizontal"
+            android:text="鈴"
+            android:textSize="24sp" />
 
     </RadioGroup>
 
@@ -71,6 +89,6 @@
         android:onClick="onClick"
         android:text="@string/vibration_Mode"
         android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:textSize="36sp" />
 
 </LinearLayout>
