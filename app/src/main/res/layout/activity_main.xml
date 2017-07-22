@@ -24,9 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
-        app:srcCompat="@drawable/shake"
+        android:contentDescription=""
         android:gravity="center"
-        android:contentDescription="" />
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/shake" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
