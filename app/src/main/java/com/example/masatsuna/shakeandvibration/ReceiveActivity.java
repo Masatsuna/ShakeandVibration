@@ -1,9 +1,9 @@
 package com.example.masatsuna.shakeandvibration;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
@@ -19,6 +19,7 @@ import java.net.SocketException;
 public class ReceiveActivity extends AppCompatActivity {
 
     boolean flag = true;
+    boolean flag2 = true;
     Thread thread;
     DatagramSocket sock;
     SoundPool soundPool;
@@ -50,9 +51,6 @@ public class ReceiveActivity extends AppCompatActivity {
                         break;
 
                 }
-
-
-
             }
         };
 
@@ -63,34 +61,38 @@ public class ReceiveActivity extends AppCompatActivity {
             public void run() {
 
                 while (flag) {
-                    try {
 
-                        byte buf[] = new byte[512];
-                        DatagramPacket packet = new DatagramPacket(buf, buf.length);
-                        sock.receive(packet);
-                        String data = new String(packet.getData()).trim();
-                        Message message = Message.obtain();
-                        message.obj = new String(data);
-                        handler.sendMessage(message);
-                        switch (data) {
-                            case "vibe":
-                                vibrator.vibrate(500);
-                                break;
-                            case "bell":
-                                soundPool.play(soundId, 1, 1, 0, 0, 1);
-                                break;
-                        }
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                imageView.setImageResource(R.drawable.recieve);
+                    if (flag2) {
+
+                        flag2 = false;
+
+                        try {
+                            byte buf[] = new byte[512];
+                            DatagramPacket packet = new DatagramPacket(buf, buf.length);
+                            sock.receive(packet);
+                            String data = new String(packet.getData()).trim();
+                            Message message = Message.obtain();
+                            message.obj = new String(data);
+                            handler.sendMessage(message);
+                            switch (data) {
+                                case "vibe":
+                                    vibrator.vibrate(500);
+                                    break;
+                                case "bell":
+                                    soundPool.play(soundId, 1, 1, 0, 0, 1);
+                                    break;
                             }
-                        }, 400);
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    imageView.setImageResource(R.drawable.recieve);
+                                }
+                            }, 400);
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
 
-
-
-                    } catch (Exception e) {
-                        System.out.println(e);
+                        flag2 = true;
                     }
                 }
 
@@ -101,12 +103,33 @@ public class ReceiveActivity extends AppCompatActivity {
         thread.start();
     }
 
+
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        AudioAttributes audioAttributes;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build();
+            soundPool = new SoundPool.Builder()
+                    .setAudioAttributes(audioAttributes)
+                    .setMaxStreams(1)
+                    .build();
+        }
+        else {
+            soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        }
+
         soundId = soundPool.load(getApplicationContext(), R.raw.bell, 0);
     }
+
+
+
 
     public void onClick(View view) throws InterruptedException {
         flag = false;
@@ -114,6 +137,8 @@ public class ReceiveActivity extends AppCompatActivity {
         sock.close();
         finish();
     }
+
+
 
     @Override
     protected void onPause() {
