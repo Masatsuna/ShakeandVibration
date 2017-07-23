@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
             }
         } catch (SocketException e) {
-            // ignore;
+
         }
         return null;
     }
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        Log.d("tag", String.valueOf(event.values[0]));
         if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER || !flag) {
             return;
         }
