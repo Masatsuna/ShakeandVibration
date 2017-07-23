@@ -5,21 +5,19 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Vibrator;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.StringBuilderPrinter;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 
 import static java.lang.Thread.sleep;
 
@@ -35,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
@@ -53,6 +52,34 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         });
     }
+
+
+    /**
+     * ブロードキャストアドレスを取得するメソッド
+     * @return  broadcastAddress.toString().substring(1);
+     */
+    private static final String getBroadcastAddress() {
+        try {
+            for (Enumeration<NetworkInterface> niEnum = NetworkInterface.getNetworkInterfaces(); niEnum.hasMoreElements(); ) {
+                NetworkInterface ni = niEnum.nextElement();
+                if (!ni.isLoopback()) {
+                    for (InterfaceAddress interfaceAddress : ni.getInterfaceAddresses()) {
+                        if (interfaceAddress != null) {
+                            InetAddress broadcastAddress = interfaceAddress.getBroadcast();
+                            if (broadcastAddress != null) {
+                                return broadcastAddress.toString().substring(1);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            // ignore;
+        }
+        return null;
+    }
+
+
 
     protected void onResume() {
         super.onResume();
@@ -76,8 +103,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
                     if ((before_y - y) > 10 && (before_z - z) < 15 ) {
                         try {
-//                            InetAddress ia = InetAddress.getByName("172.17.255.255");
-                            InetAddress ia = InetAddress.getByName("192.168.0.29");
+                            InetAddress ia = InetAddress.getByName(getBroadcastAddress());
                             int port = 50001;
                             String data = mode;
                             DatagramSocket sock = new DatagramSocket();
@@ -105,12 +131,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
     public void onClick(View view) {
-
         Intent intent = new Intent(this, ReceiveActivity.class);
         startActivity(intent);
     }

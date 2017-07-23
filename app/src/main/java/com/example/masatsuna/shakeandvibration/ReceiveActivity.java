@@ -39,6 +39,7 @@ public class ReceiveActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //画像を変化させるhandler
         final Handler handler = new Handler() {
             public void handleMessage(Message message) {
                 imageView = (ImageView) findViewById(R.id.imageView);
@@ -55,7 +56,9 @@ public class ReceiveActivity extends AppCompatActivity {
         };
 
 
-
+        /**
+         * パケットを受信後、その内容に応じて処理する
+         */
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -67,6 +70,7 @@ public class ReceiveActivity extends AppCompatActivity {
                         flag2 = false;
 
                         try {
+
                             byte buf[] = new byte[512];
                             DatagramPacket packet = new DatagramPacket(buf, buf.length);
                             sock.receive(packet);
@@ -74,6 +78,7 @@ public class ReceiveActivity extends AppCompatActivity {
                             Message message = Message.obtain();
                             message.obj = new String(data);
                             handler.sendMessage(message);
+
                             switch (data) {
                                 case "vibe":
                                     vibrator.vibrate(500);
@@ -82,12 +87,14 @@ public class ReceiveActivity extends AppCompatActivity {
                                     soundPool.play(soundId, 1, 1, 0, 0, 1);
                                     break;
                             }
+
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     imageView.setImageResource(R.drawable.recieve);
                                 }
                             }, 400);
+
                         } catch (Exception e) {
                             System.out.println(e);
                         }
@@ -95,11 +102,8 @@ public class ReceiveActivity extends AppCompatActivity {
                         flag2 = true;
                     }
                 }
-
             }
-
         });
-
         thread.start();
     }
 
